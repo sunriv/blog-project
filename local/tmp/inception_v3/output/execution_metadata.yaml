@@ -1,0 +1,17 @@
+---
+timestamp: 336171228075
+command: ./qnn-net-run --model ./libInception_v3.so --input_list ./target_raw_list.txt --backend ./libQnnCpu.so --output_dir ./output
+execution_mode: synchronous
+inferences_completed: 4
+graphs:
+  - graph_name: Inception_v3
+    input_tensors:
+    - tensor_name: input_0
+      id: 1
+      datatype: QNN_DATATYPE_FLOAT_32
+      dimensions: [1,299,299,3]
+    output_tensors:
+    - tensor_name: InceptionV3_Predictions_Reshape_1_0
+      id: 734
+      datatype: QNN_DATATYPE_FLOAT_32
+      dimensions: [1,1001]
