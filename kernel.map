@@ -14,7 +14,7 @@ Discarded input sections
  .debug_line    0x0000000000000000       0xc4 context.o
  .debug_str     0x0000000000000000      0x17a context.o
  .debug_line_str
-                0x0000000000000000       0xc1 context.o
+                0x0000000000000000       0xdb context.o
  .comment       0x0000000000000000       0x45 context.o
  .debug_frame   0x0000000000000000       0x40 context.o
  .text          0x0000000000000000        0x4 main.o
@@ -28,12 +28,12 @@ Discarded input sections
  .bss           0x0000000000000000        0x0 ctx_switch.o
  .debug_line    0x0000000000000000       0x58 ctx_switch.o
  .debug_line_str
-                0x0000000000000000       0x1f ctx_switch.o
+                0x0000000000000000       0x2c ctx_switch.o
  .debug_info    0x0000000000000000       0x28 ctx_switch.o
  .debug_abbrev  0x0000000000000000       0x14 ctx_switch.o
  .debug_aranges
                 0x0000000000000000       0x30 ctx_switch.o
- .debug_str     0x0000000000000000       0x2d ctx_switch.o
+ .debug_str     0x0000000000000000       0x3a ctx_switch.o
 
 Memory Configuration
 
@@ -56,7 +56,7 @@ LOAD ctx_switch.o
  .vectors       0x0000000040000000      0x784 entry.o
                 0x0000000040000000                vectors_el1
 
-.text           0x0000000040000790     0x112c
+.text           0x0000000040000790     0x111c
  *(.text.boot)
  .text.boot     0x0000000040000790       0x98 entry.o
                 0x0000000040000790                _start
@@ -68,27 +68,26 @@ LOAD ctx_switch.o
                 0x00000000400013d0                timer_init_100hz
                 0x0000000040001450                irq_handler_c
  *fill*         0x0000000040001534        0xc 
- .text.startup  0x0000000040001540      0x218 main.o
+ .text.startup  0x0000000040001540      0x210 main.o
                 0x0000000040001540                main
- *fill*         0x0000000040001758        0x8 
- .text          0x0000000040001760       0x78 entry.o
- *fill*         0x00000000400017d8        0x8 
- .text          0x00000000400017e0       0xdc interrupt_asm.o
-                0x00000000400017e0                irq_el1h
-                0x00000000400018a0                eos_disable_interrupt
-                0x00000000400018ac                eos_enable_interrupt
-                0x00000000400018b4                eos_restore_interrupt
+ .text          0x0000000040001750       0x78 entry.o
+ *fill*         0x00000000400017c8        0x8 
+ .text          0x00000000400017d0       0xdc interrupt_asm.o
+                0x00000000400017d0                irq_el1h
+                0x0000000040001890                eos_disable_interrupt
+                0x000000004000189c                eos_enable_interrupt
+                0x00000000400018a4                eos_restore_interrupt
 
-.iplt           0x00000000400018bc        0x0
- .iplt          0x00000000400018bc        0x0 interrupt.o
+.iplt           0x00000000400018ac        0x0
+ .iplt          0x00000000400018ac        0x0 interrupt.o
 
-.rodata         0x00000000400018c0      0x11f
+.rodata         0x00000000400018b0      0x12f
  *(.rodata*)
  .rodata.str1.8
-                0x00000000400018c0      0x108 interrupt.o
+                0x00000000400018b0      0x118 interrupt.o
                                          0xff (size before relaxing)
  .rodata.str1.8
-                0x00000000400019c8        0x8 main.o
+                0x00000000400019c8       0x18 main.o
  *fill*         0x00000000400019c8        0x8 
  .rodata        0x00000000400019d0        0xf entry.o
 
@@ -117,24 +116,24 @@ LOAD ctx_switch.o
 OUTPUT(kernel.elf elf64-littleaarch64)
 LOAD linker stubs
 
-.debug_info     0x0000000000000000     0x24c2
+.debug_info     0x0000000000000000     0x26df
  .debug_info    0x0000000000000000     0x1ef0 interrupt.o
- .debug_info    0x0000000000001ef0      0x586 main.o
- .debug_info    0x0000000000002476       0x23 entry.o
- .debug_info    0x0000000000002499       0x29 interrupt_asm.o
+ .debug_info    0x0000000000001ef0      0x7a3 main.o
+ .debug_info    0x0000000000002693       0x23 entry.o
+ .debug_info    0x00000000000026b6       0x29 interrupt_asm.o
 
-.debug_abbrev   0x0000000000000000      0x5a3
+.debug_abbrev   0x0000000000000000      0x5a6
  .debug_abbrev  0x0000000000000000      0x309 interrupt.o
- .debug_abbrev  0x0000000000000309      0x274 main.o
- .debug_abbrev  0x000000000000057d       0x12 entry.o
- .debug_abbrev  0x000000000000058f       0x14 interrupt_asm.o
+ .debug_abbrev  0x0000000000000309      0x277 main.o
+ .debug_abbrev  0x0000000000000580       0x12 entry.o
+ .debug_abbrev  0x0000000000000592       0x14 interrupt_asm.o
 
 .debug_loclists
-                0x0000000000000000      0xc34
+                0x0000000000000000      0xd20
  .debug_loclists
                 0x0000000000000000      0xb22 interrupt.o
  .debug_loclists
-                0x0000000000000b22      0x112 main.o
+                0x0000000000000b22      0x1fe main.o
 
 .debug_aranges  0x0000000000000000       0xf0
  .debug_aranges
@@ -147,44 +146,44 @@ LOAD linker stubs
                 0x00000000000000c0       0x30 interrupt_asm.o
 
 .debug_rnglists
-                0x0000000000000000      0x7f7
+                0x0000000000000000      0x7e7
  .debug_rnglists
                 0x0000000000000000      0x698 interrupt.o
  .debug_rnglists
-                0x0000000000000698      0x132 main.o
+                0x0000000000000698      0x122 main.o
  .debug_rnglists
-                0x00000000000007ca       0x2d entry.o
+                0x00000000000007ba       0x2d entry.o
 
-.debug_line     0x0000000000000000     0x21b3
+.debug_line     0x0000000000000000     0x22cb
  .debug_line    0x0000000000000000     0x1c83 interrupt.o
- .debug_line    0x0000000000001c83      0x3f8 main.o
- .debug_line    0x000000000000207b       0xb9 entry.o
- .debug_line    0x0000000000002134       0x7f interrupt_asm.o
+ .debug_line    0x0000000000001c83      0x510 main.o
+ .debug_line    0x0000000000002193       0xb9 entry.o
+ .debug_line    0x000000000000224c       0x7f interrupt_asm.o
 
-.debug_str      0x0000000000000000      0x32c
- .debug_str     0x0000000000000000      0x32c interrupt.o
+.debug_str      0x0000000000000000      0x354
+ .debug_str     0x0000000000000000      0x354 interrupt.o
                                         0x2b4 (size before relaxing)
- .debug_str     0x000000000000032c      0x1b2 main.o
- .debug_str     0x000000000000032c       0x28 entry.o
- .debug_str     0x000000000000032c       0x30 interrupt_asm.o
+ .debug_str     0x0000000000000354      0x1e2 main.o
+ .debug_str     0x0000000000000354       0x35 entry.o
+ .debug_str     0x0000000000000354       0x3d interrupt_asm.o
 
 .debug_line_str
-                0x0000000000000000       0xb3
+                0x0000000000000000       0xc0
  .debug_line_str
-                0x0000000000000000       0xb3 interrupt.o
-                                         0xbe (size before relaxing)
+                0x0000000000000000       0xc0 interrupt.o
+                                         0xd8 (size before relaxing)
  .debug_line_str
-                0x00000000000000b3       0xaf main.o
+                0x00000000000000c0       0xc9 main.o
  .debug_line_str
-                0x00000000000000b3       0x1a entry.o
+                0x00000000000000c0       0x27 entry.o
  .debug_line_str
-                0x00000000000000b3       0x22 interrupt_asm.o
+                0x00000000000000c0       0x2f interrupt_asm.o
 
 .comment        0x0000000000000000       0x44
  .comment       0x0000000000000000       0x44 interrupt.o
                                          0x45 (size before relaxing)
  .comment       0x0000000000000044       0x45 main.o
 
-.debug_frame    0x0000000000000000       0xb8
+.debug_frame    0x0000000000000000       0xb0
  .debug_frame   0x0000000000000000       0x70 interrupt.o
- .debug_frame   0x0000000000000070       0x48 main.o
+ .debug_frame   0x0000000000000070       0x40 main.o
