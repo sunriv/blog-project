@@ -31,7 +31,7 @@ _start:
     msr     VBAR_EL1, x0
     isb
 
-    // (선택) 간단한 UART Hello (동작 점검용)
+    // 간단한 UART Hello
     adrp    x12, hello_str
     add     x12, x12, :lo12:hello_str
 0:  ldrb    w13, [x12], #1
@@ -47,11 +47,12 @@ _start:
     bl      gic_init
     bl      timer_init_100hz
 
-    // 이제 IRQ 허용(DAIF의 I비트만 클리어)
-    msr     DAIFClr, #2
+    // *** 핵심 수정: IRQ와 FIQ 둘 다 언마스크 (I|F) ***
+    //   DAIFClr,#3 => I(0x2) + F(0x1) 둘 다 클리어
+    msr     DAIFClr, #3
     isb
 
-    // 커널/스케줄러 진입 (원하면 main으로 교체)
+    // 커널/스케줄러 진입
     bl      main
 
 hang:
@@ -70,8 +71,7 @@ hello_str:
     .globl __stack_top
 
 // =========================================================
-//   하드웨어 예외 벡터 테이블 (EL1) — irq는 래퍼로 직결
-//   interrupt_asm.S의 irq_el1h 라벨과 연결됨
+//   하드웨어 예외 벡터 테이블 (EL1) — IRQ/FIQ 모두 래퍼로 연결
 // =========================================================
     .section .vectors, "ax"
     .align  11
@@ -87,9 +87,9 @@ vectors_el1:
     .org vectors_el1 + 0x200
     b   el1_sync_spx
     .org vectors_el1 + 0x280
-    b   el1_irq_spx               // ★ 여기서 래퍼로 점프
+    b   el1_irq_spx               // IRQ(EL1h)
     .org vectors_el1 + 0x300
-    b   el1_fiq_spx
+    b   el1_fiq_spx               // *** 핵심 수정: FIQ도 래퍼로 점프 ***
     .org vectors_el1 + 0x380
     b   el1_serr_spx
 
@@ -124,12 +124,13 @@ el1_serr_sp0:  wfi; b el1_serr_sp0
 
 el1_sync_spx:  wfi; b el1_sync_spx
 
-    // ★ IRQ(EL1h) → 레지스터 전체 저장/복구 래퍼( interrupt_asm.S )
+    // ★ IRQ/FIQ(EL1h) → 레지스터 전체 저장/복구 래퍼( interrupt_asm.S )
     .extern irq_el1h
 el1_irq_spx:
     b   irq_el1h
+el1_fiq_spx:
+    b   irq_el1h    // *** 핵심 수정: FIQ도 같은 래퍼 사용 ***
 
-el1_fiq_spx:   wfi; b el1_fiq_spx
 el1_serr_spx:  wfi; b el1_serr_spx
 
 el1_sync_el0:  wfi; b el1_sync_el0
